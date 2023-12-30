@@ -1,0 +1,204 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>View Attendance</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css?family=Poppins:400,500,600,700,800,900');
+        body {
+  font-family: Arial, sans-serif;
+  background-color: #1f2029;
+  background-image: url(https://digitalforge.qa/images/codepen/bg.png);
+  background-size: cover;
+  background-position: center;
+  position: relative;
+  margin: 0;
+  padding: 0;
+}
+
+
+body::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-image: url(https://digitalforge.qa/images/codepen/bg.png);
+  background-size: cover;
+  background-position: center;
+  filter: blur(100px); /* Adjust the blur radius as desired */
+  z-index: -1;
+}
+        h1, h2, p {
+            text-align: center;
+            color: #fafafa;
+            font-size: 24px;
+            font-weight: 600;
+            margin-top: 40px;
+        }
+        form {
+            max-width: 600px;
+            margin: 40px auto;
+            padding: 20px;
+            color: white;
+            background-color: #2a2b38;
+            background-image: url('https://s3-us-west-2.amazonaws.com/s.cdpn.io/1462889/pat.svg');
+            border-radius: 4px;
+            box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
+        }
+        label {
+            display: block;
+            margin : 8px 0px;
+            color: #eee7e7;
+            font-weight: 500;
+            font-family: 'Poppins', sans-serif;
+            border-radius: 4px;
+            font-size: 20px;
+            line-height: 22px;
+            letter-spacing: 0.5px;
+        }
+        input[type="number"],
+        input[type="date"],
+        select {
+            width: 100%;
+            padding: 10px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+            box-sizing: border-box;
+            font-size: 16px;
+            margin-bottom: 16px;
+        }
+        .table{
+            width: 75%;
+            height: 100%;
+            margin-left: 13%;
+            align-items: center;
+            justify-content: center;
+            border: none;
+            border-radius: 4px;
+            box-sizing: border-box;
+            font-size: 16px;
+            margin-bottom: 16px;
+        }
+        
+        input[type="submit"] {
+            display: block;
+            width: 100%;
+            padding: 12px 16px;
+            background-color: #ffeba7;
+            color: #020202;
+            font-size: 16px;
+            font-weight: 600;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+        }
+        input[type="submit"]:hover {
+            background-color: #f1e0a58f;;
+        }
+        .submit {
+            text-decoration: none;
+            padding: 10px 20px;
+            background-color: #ffeba7;
+            color: #0b0b0b;
+            border-radius: 5px;
+            margin-top: 10px;
+            /* margin-left: 37%; */
+        }
+
+        .submit:hover {
+            background-color: #ffe89c68;
+        }
+        
+    </style>    
+</head>
+<body>
+    <h1>View Attendance</h1>
+    <form method="POST" action="{{ url_for('view_attendance', course_id=course_id) }}">
+        <div>
+            <label for="search">Search by Roll Number:</label>
+            <input type="text" id="search" name="search">
+        </div>
+        <div>
+            <label for="date">Date:</label>
+            <input type="date" id="date" name="date">
+        </div>
+        <div>
+            <label for="hour">Hour:</label>
+            <input type="text" id="hour" name="hour">
+        </div>
+        <button type="submit" class="submit">Search</button>
+    </form>
+    
+    
+
+    {% if attendance %}
+        <h2>Attendance Records</h2>
+        <iframe class="table" srcdoc="
+        <!DOCTYPE html>
+    <html>
+    <head>
+      <title>Table Example</title>
+    </head>
+    <body>
+        <style>
+            table {
+                
+                font-weight: 500;
+                font-family: 'Poppins', sans-serif;
+                border-radius: 4px;
+                font-size: 20px;
+                line-height: 22px;
+                letter-spacing: 0.5px;
+                width: 100%;
+                height: 100%;
+                border-collapse: collapse;
+                margin-bottom: 16px;
+                background-color: #2a2b38;
+                background-image: url('https://s3-us-west-2.amazonaws.com/s.cdpn.io/1462889/pat.svg');
+                border-radius: 4px;
+                box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
+            }
+            th, td {
+                padding: 8px;
+                text-align: center;
+                border-bottom: 1px solid #ccc;
+                color: white;
+            }
+            th {
+                color: white;
+                font-weight: 600;
+            }
+        </style>
+        <table>
+            <thead>
+                <tr>
+                    <th>Student ID</th>
+                    <th>Course ID</th>
+                    <th>Faculty ID</th>
+                    <th>Date</th>
+                    <th>Hour</th>
+                    <th>Status</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for record in attendance %}
+                    <tr>
+                        <td>{{ record[0] }}</td>
+                        <td>{{ record[1] }}</td>
+                        <td>{{ record[2] }}</td>
+                        <td>{{ record[3] }}</td>
+                        <td>{{ record[4] }}</td>
+                        <td>{{ record[5] }}</td>
+                    </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </body>
+    </html>" frameborder="0"></iframe>
+        
+    {% else %}
+        <p>No attendance records found.</p>
+    {% endif %}
+</body>
+</html>
